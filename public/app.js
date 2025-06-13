@@ -68,7 +68,8 @@ form.onsubmit = async function(event) {
       }, 100);
     });
 
-    lastObfuscatedCode = obfuscationResult.getObfuscatedCode();
+    // Add attribution and get obfuscated code
+    lastObfuscatedCode = "// Veronica obfuscator developed by terrizev\n" + obfuscationResult.getObfuscatedCode();
     output.value = lastObfuscatedCode;
 
     // Switch to results view
@@ -121,7 +122,7 @@ function getObfuscationOptions(domainLockArray) {
       deadCodeInjection: true,
       deadCodeInjectionThreshold: 0.4,
       debugProtection: true,
-      debugProtectionInterval: true,
+      debugProtectionInterval: 2000, // Fixed: now a number value
       disableConsoleOutput: true,
       selfDefending: true,
       stringArrayEncoding: ['rc4'],
