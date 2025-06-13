@@ -1,0 +1,36 @@
+{
+  "name": "veronica-obfuscator",
+  "version": "1.0.0",
+  "description": "VERONICA JavaScript Obfuscation Tool - Professional code protection with multiple security levels",
+  "main": "index.js",
+  "type": "module",
+  "engines": {
+    "npm": ">=9.7.2",
+    "node": ">=20.0.0"
+  },
+  "scripts": {
+    "start": "node index.js",
+    "dev": "nodemon index.js",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build-css": "sass src/scss:public/css",
+    "watch-css": "sass --watch src/scss:public/css"
+  },
+  "keywords": [
+    "javascript",
+    "obfuscator",
+    "code protection",
+    "security",
+    "veronica"
+  ],
+  "author": "Terrizev",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.21.2",
+    "path": "^0.12.7",
+    "javascript-obfuscator": "^4.0.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.0",
+    "sass": "^1.72.0"
+  }
+}
