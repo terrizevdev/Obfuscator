@@ -1,18 +1,38 @@
 {
   "name": "veronica-obfuscator",
-  "version": "1.0.0",
-  "description": "VERONICA JavaScript Obfuscation Tool",
+  "version": "1.0.1",
+  "description": "Professional JavaScript obfuscation tool with domain locking and multi-level security",
   "main": "index.cjs",
   "scripts": {
     "start": "node index.cjs",
-    "dev": "nodemon index.cjs"
+    "dev": "nodemon index.cjs",
+    "test": "echo \"Error: no tests configured\" && exit 0",
+    "check-paths": "node -e \"require('fs').accessSync('public/index.html'); console.log('✓ Paths valid')\""
   },
+  "engines": {
+    "node": ">=16.0.0",
+    "npm": ">=8.0.0"
+  },
+  "keywords": [
+    "javascript",
+    "obfuscator",
+    "security",
+    "veronica",
+    "code-protection"
+  ],
+  "author": "Your Name <your.email@example.com>",
+  "license": "MIT",
   "dependencies": {
-    "express": "^4.21.2",
-    "path": "^0.12.7",
-    "javascript-obfuscator": "^4.0.0"
+    "express": "^4.18.2",
+    "javascript-obfuscator": "^4.0.0",
+    "morgan": "^1.10.0",
+    "helmet": "^7.1.0"
   },
   "devDependencies": {
     "nodemon": "^3.1.0"
-  }
+  },
+  "files": [
+    "public/",
+    "index.cjs"
+  ]
 }
