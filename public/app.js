@@ -6,10 +6,12 @@ const lockDomains = document.getElementById("lockDomains");
 const output = document.getElementById("output");
 const obfuscateAnotherCode = document.getElementById("obfuscateAnotherCode");
 const copyBtn = document.getElementById("copyBtn");
+const downloadBtn = document.getElementById("downloadBtn");
 const securityLevelButtons = document.querySelectorAll(".security-level-btn");
+const performanceMeterFill = document.getElementById("performanceMeterFill");
 
 // State
-let currentSecurityLevel = "medium";
+let currentSecurityLevel = "standard";
 let lastObfuscatedCode = "";
 
 // Initialize security level buttons
@@ -19,17 +21,59 @@ securityLevelButtons.forEach(button => {
     this.classList.add("active");
     currentSecurityLevel = this.dataset.level;
     updateSecurityDescription();
+    updatePerformanceMeter();
   });
 });
 
-// Security level descriptions
+// Security level descriptions and performance indicators
 function updateSecurityDescription() {
   const descriptions = {
-    low: "Basic obfuscation (string array transformation)",
-    medium: "Standard protection (control flow flattening + debug protection)",
-    high: "Advanced security (dead code injection + self-defending)"
+    basic: {
+      text: "Basic obfuscation (minimal protection, fastest performance)",
+      performance: 95
+    },
+    standard: {
+      text: "Standard protection (control flow flattening + debug protection)",
+      performance: 80
+    },
+    advanced: {
+      text: "Enhanced security (self-defending + identifier mangling)",
+      performance: 65
+    },
+    enterprise: {
+      text: "Professional-grade (multiple layers + anti-debugging)",
+      performance: 45
+    },
+    ultra: {
+      text: "Maximum security (all techniques + virtualization - slowest)",
+      performance: 20
+    }
   };
-  document.getElementById("securityDescription").textContent = descriptions[currentSecurityLevel];
+  
+  document.getElementById("securityDescription").textContent = descriptions[currentSecurityLevel].text;
+  return descriptions[currentSecurityLevel].performance;
+}
+
+function updatePerformanceMeter() {
+  const performanceLevels = {
+    basic: 95,
+    standard: 80,
+    advanced: 65,
+    enterprise: 45,
+    ultra: 20
+  };
+  
+  const percentage = performanceLevels[currentSecurityLevel];
+  performanceMeterFill.style.width = `${percentage}%`;
+  
+  // Update color based on performance level
+  if (percentage > 70) {
+    performanceMeterFill.className = "performance-meter-fill bg-success";
+  } else if (percentage > 40) {
+    performanceMeterFill.className = "performance-meter-fill bg-warning";
+  } else {
+    performanceMeterFill.className = "performance-meter-fill bg-danger";
+  }
 }
 
 // Main obfuscation function
@@ -69,7 +113,10 @@ form.onsubmit = async function(event) {
     });
 
     // Add attribution and get obfuscated code
-    lastObfuscatedCode = "// Veronica obfuscator developed by terrizev\n" + obfuscationResult.getObfuscatedCode();
+    lastObfuscatedCode = `// Obfuscated with VERONICA Obfuscator PRO (Security Level: ${currentSecurityLevel.toUpperCase()})\n` + 
+                         `// ${new Date().toISOString()}\nDev Terrizev contact telegram \nt.me/terrizev\n` +
+                         obfuscationResult.getObfuscatedCode();
+    
     output.value = lastObfuscatedCode;
 
     // Switch to results view
@@ -93,55 +140,149 @@ form.onsubmit = async function(event) {
 function getObfuscationOptions(domainLockArray) {
   const baseOptions = {
     compact: true,
+    controlFlowFlattening: false,
+    controlFlowFlatteningThreshold: 0,
+    deadCodeInjection: false,
+    deadCodeInjectionThreshold: 0,
+    debugProtection: false,
+    debugProtectionInterval: 0,
     disableConsoleOutput: false,
     identifierNamesGenerator: 'hexadecimal',
+    log: false,
+    numbersToExpressions: false,
     renameGlobals: false,
+    renameProperties: false,
     selfDefending: false,
+    simplify: true,
+    splitStrings: false,
+    splitStringsChunkLength: 10,
     stringArray: true,
-    stringArrayThreshold: 0.75
+    stringArrayEncoding: [],
+    stringArrayIndexShift: false,
+    stringArrayWrappersCount: 1,
+    stringArrayWrappersChainedCalls: false,
+    stringArrayThreshold: 0.75,
+    target: 'browser',
+    transformObjectKeys: false,
+    unicodeEscapeSequence: false
   };
 
   const optionsByLevel = {
-    low: {
+    basic: {
       ...baseOptions,
-      controlFlowFlattening: false,
-      stringArrayEncoding: []
+      stringArrayThreshold: 0.75,
+      stringArrayWrappersCount: 1,
+      simplify: true
     },
-    medium: {
+    standard: {
       ...baseOptions,
       controlFlowFlattening: true,
       controlFlowFlatteningThreshold: 0.75,
       debugProtection: true,
       stringArrayEncoding: ['base64'],
-      stringArrayThreshold: 0.5
+      stringArrayThreshold: 0.5,
+      stringArrayWrappersCount: 1,
+      stringArrayWrappersChainedCalls: true,
+      simplify: true
     },
-    high: {
+    advanced: {
       ...baseOptions,
       controlFlowFlattening: true,
-      controlFlowFlatteningThreshold: 1,
+      controlFlowFlatteningThreshold: 0.85,
       deadCodeInjection: true,
-      deadCodeInjectionThreshold: 0.4,
+      deadCodeInjectionThreshold: 0.3,
       debugProtection: true,
-      debugProtectionInterval: 2000, // Fixed: now a number value
+      debugProtectionInterval: 1000,
       disableConsoleOutput: true,
       selfDefending: true,
       stringArrayEncoding: ['rc4'],
-      stringArrayThreshold: 0.25,
+      stringArrayThreshold: 0.4,
+      stringArrayWrappersCount: 2,
+      stringArrayWrappersChainedCalls: true,
       transformObjectKeys: true,
-      unicodeEscapeSequence: true
+      unicodeEscapeSequence: true,
+      simplify: false
+    },
+    enterprise: {
+      ...baseOptions,
+      compact: false,
+      controlFlowFlattening: true,
+      controlFlowFlatteningThreshold: 1,
+      deadCodeInjection: true,
+      deadCodeInjectionThreshold: 0.5,
+      debugProtection: true,
+      debugProtectionInterval: 500,
+      disableConsoleOutput: true,
+      domainLock: domainLockArray.length > 0 ? domainLockArray : undefined,
+      identifierNamesGenerator: 'mangled',
+      numbersToExpressions: true,
+      renameGlobals: true,
+      renameProperties: true,
+      renamePropertiesMode: 'safe',
+      selfDefending: true,
+      splitStrings: true,
+      splitStringsChunkLength: 8,
+      stringArray: true,
+      stringArrayEncoding: ['rc4', 'base64'],
+      stringArrayIndexShift: true,
+      stringArrayThreshold: 0.3,
+      stringArrayWrappersCount: 3,
+      stringArrayWrappersChainedCalls: true,
+      transformObjectKeys: true,
+      unicodeEscapeSequence: true,
+      simplify: false
+    },
+    ultra: {
+      ...baseOptions,
+      compact: false,
+      controlFlowFlattening: true,
+      controlFlowFlatteningThreshold: 1,
+      deadCodeInjection: true,
+      deadCodeInjectionThreshold: 0.75,
+      debugProtection: true,
+      debugProtectionInterval: 200,
+      disableConsoleOutput: true,
+      domainLock: domainLockArray.length > 0 ? domainLockArray : undefined,
+      domainLockRedirectUrl: 'about:blank',
+      identifierNamesGenerator: 'mangled-shuffled',
+      numbersToExpressions: true,
+      renameGlobals: true,
+      renameProperties: true,
+      renamePropertiesMode: 'unsafe',
+      reservedNames: ['^_$'],
+      selfDefending: true,
+      simplify: false,
+      splitStrings: true,
+      splitStringsChunkLength: 5,
+      stringArray: true,
+      stringArrayEncoding: ['rc4', 'base64', 'none'],
+      stringArrayIndexShift: true,
+      stringArrayThreshold: 0.1,
+      stringArrayWrappersCount: 5,
+      stringArrayWrappersChainedCalls: true,
+      stringArrayWrappersParametersMaxCount: 5,
+      transformObjectKeys: true,
+      unicodeEscapeSequence: true,
+      rotateStringArray: true,
+      shuffleStringArray: true,
+      seed: Math.random().toString(36).substring(2, 15),
+      forceTransformStrings: ['eval', 'Function', 'constructor', '^get', '^set'],
+      reservedStrings: ['^some.*']
     }
   };
 
-  return {
-    ...optionsByLevel[currentSecurityLevel],
-    ...(domainLockArray.length > 0 && { domainLock: domainLockArray })
-  };
+  return optionsByLevel[currentSecurityLevel];
 }
 
 // UI Functions
 function showError(message) {
   const errorElement = document.getElementById("errorAlert") || createErrorElement();
-  errorElement.textContent = message;
+  errorElement.innerHTML = `
+    <div class="d-flex align-items-center">
+      <i class="fas fa-exclamation-circle me-2"></i>
+      <span>${message}</span>
+    </div>
+  `;
   errorElement.classList.remove("d-none");
   setTimeout(() => errorElement.classList.add("d-none"), 5000);
 }
@@ -165,19 +306,43 @@ copyBtn.onclick = async function() {
   }
 };
 
+// Download functionality
+downloadBtn.onclick = function() {
+  const blob = new Blob([output.value], { type: "text/javascript" });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = `obfuscated-${currentSecurityLevel}-${Date.now()}.js`;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+  showToast("Download started!");
+};
+
 function showToast(message) {
   const toast = document.createElement("div");
-  toast.className = "position-fixed bottom-0 end-0 p-3";
+  toast.className = "toast show";
+  toast.setAttribute("role", "alert");
   toast.innerHTML = `
-    <div class="toast show" role="alert">
-      <div class="toast-body d-flex align-items-center">
-        <i class="fas fa-check-circle text-success me-2"></i>
-        <span>${message}</span>
-      </div>
+    <div class="toast-body d-flex align-items-center">
+      <i class="fas fa-check-circle text-success me-2"></i>
+      <span>${message}</span>
+      <button type="button" class="btn-close ms-auto" data-bs-dismiss="toast" aria-label="Close"></button>
     </div>
   `;
   document.body.appendChild(toast);
-  setTimeout(() => toast.remove(), 3000);
+  
+  // Add Bootstrap toast functionality
+  const bsToast = new bootstrap.Toast(toast, {
+    autohide: true,
+    delay: 3000
+  });
+  bsToast.show();
+  
+  toast.addEventListener("hidden.bs.toast", () => {
+    toast.remove();
+  });
 }
 
 // Reset form
@@ -185,6 +350,7 @@ obfuscateAnotherCode.onclick = function() {
   form2.classList.add("d-none");
   form.classList.remove("d-none");
   output.value = "";
+  javascriptCode.focus();
 };
 
 // Analytics (optional)
@@ -195,7 +361,16 @@ function logObfuscationEvent(level, domainCount) {
       'domain_locks': domainCount
     });
   }
+  
+  // Simple console log for debugging
+  console.log(`Obfuscation completed at ${level} level with ${domainCount} domain locks`);
 }
 
 // Initialize
 updateSecurityDescription();
+updatePerformanceMeter();
+
+// Add performance warning for ultra level
+document.querySelector('[data-level="ultra"]').addEventListener('click', () => {
+  showToast("Warning: Ultra level may significantly impact performance");
+});
