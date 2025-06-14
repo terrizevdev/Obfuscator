@@ -1,38 +1,115 @@
 {
-  "name": "veronica-obfuscator",
-  "version": "1.0.1",
-  "description": "Professional JavaScript obfuscation tool with domain locking and multi-level security",
+  "name": "veronica-obfuscator-pro",
+  "version": "2.1.0",
+  "description": "Enterprise-grade JavaScript obfuscation suite with military-level security and comprehensive protection features",
   "main": "index.cjs",
+  "type": "commonjs",
   "scripts": {
-    "start": "node index.cjs",
-    "dev": "nodemon index.cjs",
-    "test": "echo \"Error: no tests configured\" && exit 0",
-    "check-paths": "node -e \"require('fs').accessSync('public/index.html'); console.log('✓ Paths valid')\""
+    "start": "NODE_ENV=production node index.cjs",
+    "dev": "NODE_ENV=development nodemon index.cjs",
+    "test": "NODE_ENV=test jest --coverage --detectOpenHandles",
+    "test:security": "npm audit && npx snyk test",
+    "lint": "eslint . --ext .js,.cjs --fix",
+    "audit": "npm audit --production --audit-level=critical",
+    "profile": "NODE_ENV=development node --inspect index.cjs",
+    "clean": "rm -rf logs/*.log",
+    "predeploy": "npm run test && npm run audit",
+    "docker:build": "docker build -t veronica-obfuscator .",
+    "docker:run": "docker run -p 3000:3000 -d veronica-obfuscator"
   },
   "engines": {
-    "node": ">=16.0.0",
-    "npm": ">=8.0.0"
+    "node": ">=18.16.0",
+    "npm": ">=9.5.1"
   },
   "keywords": [
-    "javascript",
-    "obfuscator",
+    "javascript-obfuscator",
+    "code-protection",
     "security",
-    "veronica",
-    "code-protection"
+    "anti-reverse-engineering",
+    "enterprise-security",
+    "web-application-security",
+    "cybersecurity",
+    "intellectual-property-protection"
   ],
-  "author": "Your Name <your.email@example.com>",
-  "license": "MIT",
+  "author": {
+    "name": "terrizevdev",
+    "email": "security@example.com",
+    "url": "https://example.com"
+  },
+  "license": "SEE LICENSE IN LICENSE.md",
   "dependencies": {
+    "compression": "^1.7.4",
+    "cookie-parser": "^1.4.6",
+    "csurf": "^1.11.0",
     "express": "^4.18.2",
-    "javascript-obfuscator": "^4.0.0",
+    "express-rate-limit": "^6.7.0",
+    "helmet": "^7.1.0",
+    "javascript-obfuscator": "^4.1.0",
     "morgan": "^1.10.0",
-    "helmet": "^7.1.0"
+    "rate-limit-redis": "^3.0.0",
+    "uuid": "^9.0.1",
+    "winston": "^3.8.2",
+    "winston-daily-rotate-file": "^4.7.1"
   },
   "devDependencies": {
-    "nodemon": "^3.1.0"
+    "@babel/core": "^7.22.10",
+    "@babel/preset-env": "^7.22.10",
+    "eslint": "^8.47.0",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-plugin-import": "^2.28.0",
+    "jest": "^29.6.2",
+    "nodemon": "^3.0.1",
+    "snyk": "^1.1198.0",
+    "supertest": "^6.3.3",
+    "webpack": "^5.88.2",
+    "webpack-cli": "^5.1.4"
   },
   "files": [
+    "index.cjs",
     "public/",
-    "index.cjs"
-  ]
+    "LICENSE.md",
+    "SECURITY.md",
+    "README.md"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/terrizevdev/veronica-obfuscator-pro.git",
+    "directory": "src"
+  },
+  "bugs": {
+    "url": "https://github.com/terrizevdev/veronica-obfuscator-pro/issues",
+    "email": "security@example.com"
+  },
+  "homepage": "https://obfuscator.example.com",
+  "funding": {
+    "type": "opencollective",
+    "url": "https://opencollective.com/veronica-obfuscator"
+  },
+  "contributors": [],
+  "private": true,
+  "volta": {
+    "node": "18.16.1",
+    "npm": "9.5.1"
+  },
+  "os": [
+    "linux",
+    "darwin"
+  ],
+  "cpu": [
+    "x64",
+    "arm64"
+  ],
+  "publishConfig": {
+    "access": "restricted",
+    "registry": "https://registry.npmjs.org/"
+  },
+  "release": {
+    "branches": [
+      "main",
+      {
+        "name": "beta",
+        "prerelease": true
+      }
+    ]
+  }
 }
