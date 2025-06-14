@@ -12,6 +12,7 @@
         :root {
             --primary-gradient: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
             --secondary-gradient: linear-gradient(135deg, #2575fc 0%, #6a11cb 100%);
+            --ultra-gradient: linear-gradient(135deg, #ff416c 0%, #ff4b2b 100%);
         }
         
         body {
@@ -34,6 +35,8 @@
         .security-level-btn {
             transition: all 0.3s ease;
             border: 2px solid transparent;
+            position: relative;
+            overflow: hidden;
         }
         
         .security-level-btn:hover {
@@ -41,10 +44,42 @@
         }
         
         .security-level-btn.active {
-            border-color: #2575fc;
-            background: rgba(37, 117, 252, 0.1);
             transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(37, 117, 252, 0.2);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+        
+        .security-level-btn[data-level="basic"].active {
+            border-color: #6c757d;
+            background: rgba(108, 117, 125, 0.1);
+        }
+        
+        .security-level-btn[data-level="standard"].active {
+            border-color: #0d6efd;
+            background: rgba(13, 110, 253, 0.1);
+        }
+        
+        .security-level-btn[data-level="advanced"].active {
+            border-color: #6610f2;
+            background: rgba(102, 16, 242, 0.1);
+        }
+        
+        .security-level-btn[data-level="enterprise"].active {
+            border-color: #d63384;
+            background: rgba(214, 51, 132, 0.1);
+        }
+        
+        .security-level-btn[data-level="ultra"].active {
+            border-color: #dc3545;
+            background: rgba(220, 53, 69, 0.1);
+        }
+        
+        .security-level-badge {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            font-size: 10px;
+            padding: 3px 6px;
+            border-radius: 10px;
         }
         
         textarea {
@@ -66,6 +101,38 @@
             position: fixed;
             bottom: 20px;
             right: 20px;
+            z-index: 1100;
+        }
+        
+        .security-tooltip {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            z-index: 100;
+            display: none;
+            min-width: 200px;
+            padding: 8px;
+            background: white;
+            border-radius: 4px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+            font-size: 12px;
+        }
+        
+        .security-level-btn:hover .security-tooltip {
+            display: block;
+        }
+        
+        .performance-meter {
+            height: 4px;
+            background: #e9ecef;
+            border-radius: 2px;
+            margin-top: 8px;
+            overflow: hidden;
+        }
+        
+        .performance-meter-fill {
+            height: 100%;
+            transition: width 0.3s ease;
         }
     </style>
 </head>
@@ -74,10 +141,10 @@
     <header class="header-bg py-5 mb-5">
         <div class="container text-center">
             <h1 class="fw-bold display-4 mb-3">
-                <i class="fas fa-lock me-2"></i> VERONICA OBFUSCATION
+                <i class="fas fa-lock me-2"></i> VERONICA OBFUSCATOR PRO
             </h1>
             <p class="lead mb-0">
-                Professional-grade JavaScript protection with multi-level security
+                Military-grade JavaScript protection with security levels by terrizev😈 
             </p>
         </div>
     </header>
@@ -119,30 +186,71 @@
                                 <label class="form-label fw-bold d-block mb-3">
                                     <i class="fas fa-shield-alt me-2"></i>Security Level
                                 </label>
-                                <div class="d-flex flex-wrap gap-2">
+                                <div class="d-flex flex-wrap gap-2 mb-3">
                                     <button 
                                         type="button" 
-                                        class="btn btn-outline-primary security-level-btn flex-grow-1 active" 
-                                        data-level="low"
+                                        class="btn btn-outline-secondary security-level-btn position-relative" 
+                                        data-level="basic"
                                     >
                                         <i class="fas fa-lock-open me-2"></i>Basic
+                                        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-secondary">1</span>
+                                        <div class="security-tooltip">
+                                            Basic obfuscation with minimal performance impact. Suitable for simple protection needs.
+                                        </div>
                                     </button>
                                     <button 
                                         type="button" 
-                                        class="btn btn-outline-primary security-level-btn flex-grow-1" 
-                                        data-level="medium"
+                                        class="btn btn-outline-primary security-level-btn position-relative active" 
+                                        data-level="standard"
                                     >
                                         <i class="fas fa-lock me-2"></i>Standard
+                                        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-primary">2</span>
+                                        <div class="security-tooltip">
+                                            Balanced protection with control flow flattening. Recommended for most applications.
+                                        </div>
                                     </button>
                                     <button 
                                         type="button" 
-                                        class="btn btn-outline-primary security-level-btn flex-grow-1" 
-                                        data-level="high"
+                                        class="btn btn-outline-primary security-level-btn position-relative" 
+                                        data-level="advanced"
                                     >
                                         <i class="fas fa-lock me-2"></i>Advanced
+                                        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-info">3</span>
+                                        <div class="security-tooltip">
+                                            Strong protection with self-defending code. Ideal for sensitive client-side logic.
+                                        </div>
+                                    </button>
+                                    <button 
+                                        type="button" 
+                                        class="btn btn-outline-danger security-level-btn position-relative" 
+                                        data-level="enterprise"
+                                    >
+                                        <i class="fas fa-shield-alt me-2"></i>Enterprise
+                                        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">4</span>
+                                        <div class="security-tooltip">
+                                            Professional-grade protection with multiple layers. For high-security applications.
+                                        </div>
+                                    </button>
+                                    <button 
+                                        type="button" 
+                                        class="btn btn-outline-danger security-level-btn position-relative" 
+                                        data-level="ultra😈"
+                                    >
+                                        <i class="fas fa-user-secret me-2"></i>Ultra
+                                        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-dark">5</span>
+                                        <div class="security-tooltip">
+                                            Maximum security with heavy obfuscation. May impact performance significantly.
+                                        </div>
                                     </button>
                                 </div>
-                                <p id="securityDescription" class="text-muted small mt-2"></p>
+                                <div class="d-flex justify-content-between small text-muted mb-1">
+                                    <span>Performance</span>
+                                    <span>Security</span>
+                                </div>
+                                <div class="performance-meter">
+                                    <div id="performanceMeterFill" class="performance-meter-fill bg-success" style="width: 80%"></div>
+                                </div>
+                                <p id="securityDescription" class="text-muted small mt-2">Standard protection with control flow flattening and debug protection</p>
                             </div>
 
                             <button type="submit" class="btn btn-primary w-100 py-3 fw-bold">
@@ -182,6 +290,15 @@
                                         <i class="fas fa-copy me-2"></i>Copy Code
                                     </button>
                                 </div>
+                                <div class="col-12">
+                                    <button 
+                                        id="downloadBtn" 
+                                        type="button" 
+                                        class="btn btn-outline-dark w-100 py-2"
+                                    >
+                                        <i class="fas fa-download me-2"></i>Download as File
+                                    </button>
+                                </div>
                             </div>
                         </form>
                     </div>
@@ -194,7 +311,7 @@
     <footer class="py-4 mt-auto">
         <div class="container text-center">
             <p class="mb-0">
-                © 2025 VERONICA JavaScript Obfuscation Tool. All rights reserved.
+                © 2025 VERONICA JavaScript Obfuscator PRO. All rights reserved. Terrizev 
             </p>
         </div>
     </footer>
@@ -206,4 +323,4 @@
     <!-- Main Application Script -->
     <script src="app.js"></script>
 </body>
-</html>
+                                </html>
